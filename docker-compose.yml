@@ -1,0 +1,21 @@
+data:
+  build: data
+  container_name: openldap_data
+  volumes:
+    - /var/lib/ldap
+
+server:
+  build: server
+  container_name: openldap_server
+  environment:
+    - DEBIAN_FRONTEND=noninteractive
+    - TERM=linux
+  log_driver: syslog
+  log_opt:
+    address: "udp://127.0.0.1:514"
+  ports:
+    - "0.0.0.0:389:389/tcp"
+    - "0.0.0.0:636:636/tcp"
+  restart: always
+  volumes_from:
+    - data
